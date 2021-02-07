@@ -12,8 +12,8 @@ CREATE TABLE department (
 CREATE TABLE role (
   id INT NOT NULL AUTO_INCREMENT,
   title VARCHAR(30) NULL,
-  salary DECIMAL(6, 2) NULL,
-  department_id INT default 0,
+  salary DECIMAL(10, 2) NULL,
+  department_id INT default 1,
   PRIMARY KEY (id)
 );
 
@@ -21,8 +21,6 @@ CREATE TABLE employee (
   id INT NOT NULL AUTO_INCREMENT,
   first_name VARCHAR(30) NULL,
   last_name VARCHAR(30) NULL,
-  role_id INT default 0,
-  manager_id default 0,
   PRIMARY KEY (id)
 );
 

@@ -1,5 +1,6 @@
 const mysql = require('mysql');
 const inquirer = require('inquirer');
+const ctable = ('console.table')
 
 const port = 3306;
 
@@ -29,14 +30,14 @@ const start = () => {
         type: 'rawlist',
         message: 'Test the server',
         choices: [
-            'This is a test',
+            'View all employees',
             'This is a test 2',
             'This is a test 3',
         ]
     }).then((data) => {
         switch(data.action) {
-            case 'This is a test':
-                console.log('it works!');
+            case 'View all employees':
+                employeeSearch();
                 break;
             
             case 'This is a test 2':
@@ -48,4 +49,12 @@ const start = () => {
                 break
         }
     })
+};
+
+const employeeSearch = () => {
+    const query = 
+    "SELECT role.department_id, department.name, role.title FROM role JOIN department ON role.department_id = department.id";
+    connection.query(query, (err, res) => {
+        console.table(res)
+    });
 };
