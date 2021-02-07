@@ -28,7 +28,7 @@ const start = () => {
     inquirer.prompt({
         name: 'action',
         type: 'rawlist',
-        message: 'Test the server',
+        message: 'Employee tracking options:',
         choices: [
             'View all employees',
             'View all departments',
@@ -74,10 +74,29 @@ const start = () => {
 
 
 
-// const employeeSearch = () => {
-//     const query = 
-//     "SELECT role.department_id, department.name, role.title FROM role JOIN department ON role.department_id = department.id";
-//     connection.query(query, (err, res) => {
-//         console.table(res)
-//     });
-// };
+const employeeSearch = () => {
+    const query = 
+    "SELECT employee.last_name, employee.first_name, role.title, department.department, role.salary FROM employee JOIN role ON employee.id = role.department_id JOIN department on role.department_id = department.id";
+    connection.query(query, (err, res) => {
+        console.table(res);
+        start();
+    });
+};
+
+const viewDept = () => {
+    const query = 
+    "SELECT department.department FROM department"
+    connection.query(query, (err, res) => {
+        console.table(res);
+        start();
+    });
+};
+
+const viewRole = () => {
+    const query = 
+    "SELECT role.title, department.department, role.department_id FROM role JOIN department ON role.department_id = department.id"
+    connection.query(query, (err, res) => {
+        console.table(res);
+        start();
+    });
+};
