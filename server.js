@@ -31,19 +31,13 @@ const start = () => {
         message: 'Test the server',
         choices: [
             'View all employees',
-            'View all employees by department',
-            'View all employees by manager',
-            'Add employee',
-            'Remove employee',
-            'Update employee role',
-            'Update employee manager',
-            'View all roles',
-            'Add role',
-            'Remove role',
             'View all departments',
+            'View all roles',
+            'Add employee',
             'Add department',
-            'Remove department',
-            'View department budget',
+            'Add role',
+            'Update employee role',
+            'View budget',
             'Exit',
         ]
     }).then((data) => {
@@ -51,43 +45,25 @@ const start = () => {
             case 'View all employees':
                 employeeSearch();
                 break;
-            case 'View all employees by department':
-                employeeDept();
-                break;
-            case 'View all employees by manager':
-                employeeManager();
-                break;
-            case 'Add employee':
-                touchEmployee();
-                break;
-            case 'Remove employee':
-                remEmployee();
-                break;
-            case 'Update employee role':
-                updEmployee();
-                break;
-            case 'Update employee manager':
-                updManager();
-                break;
-            case 'View all roles':
-                viewRoles();
-                break;
-            case 'Add role':
-                addRole();
-                break;
-            case 'Remove role':
-                remRole();
-                break;
             case 'View all departments':
                 viewDept();
+                break;
+            case 'View all roles':
+                viewRole();
+                break;
+            case 'Add employee':
+                addEmployee();
                 break;
             case 'Add department':
                 addDept();
                 break;
-            case 'Remove department':
-                remDept();
+            case 'Add role':
+                addRole();
                 break;
-            case 'View department budget':
+            case 'Update employee role':
+                updateRole();
+                break;
+            case 'View budget':
                 viewBudget();
                 break;
             case 'Exit':
