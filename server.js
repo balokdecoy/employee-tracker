@@ -102,6 +102,14 @@ const viewRole = () => {
 };
 
 const addEmployee = () => {
+    const roleChoices = [];
+    const query = 'SELECT role.id, role.title FROM role';
+    connection.query(query, (err, res) => {
+        if (err) throw err;
+        for (var i = 0; i < res.length; i++) {
+            roleChoices.push({ name: res[i].title, value: res[i].id })
+        };
+    })
     inquirer.prompt([
         {
             name: 'first',
@@ -114,12 +122,13 @@ const addEmployee = () => {
             message: 'Enter employee last name',
         },
         {
-            name: 'employee',
-            type: 'input',
-            message: 'Enter employee ID',
+            name: 'role',
+            type: 'rawlist',
+            message: 'Select employee role',
+            choices: roleChoices,
         },
     ]).then((data) => {
-        const query = `INSERT INTO employee (first_name, last_name, employee_id) VALUES ('${data.first}', '${data.last}', ${data.employee})`
+        const query = `INSERT INTO employee (first_name, last_name, role_id) VALUES ('${data.first}', '${data.last}', ${data.role})`
         connection.query(query, (err, res) => {
             if (err) throw err;
             console.table(query);
