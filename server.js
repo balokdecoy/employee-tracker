@@ -149,3 +149,30 @@ const addDept = () => {
         });
     })
 };
+
+const addRole = () => {
+    inquirer.prompt([
+        {
+            name: 'title',
+            type: 'input',
+            message: 'Enter title of role',
+        },
+        {
+            name: 'salary',
+            type: 'input',
+            message: 'Enter role salary',
+        },
+        {
+            name: 'number',
+            type: 'input',
+            message: 'Enter role ID',
+        }
+    ]).then((data) => {
+        const query = `INSERT INTO role (title, salary, role_id) VALUES ('${data.title}',${data.salary}, ${data.number})`
+        connection.query(query, (err, res) => {
+            if (err) throw err;
+            console.table(query);
+            start();
+        });
+    })
+};
