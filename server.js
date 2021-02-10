@@ -76,7 +76,7 @@ const start = () => {
 
 const employeeSearch = () => {
     const query = 
-    "SELECT employee.last_name, employee.first_name, role.title, department.department, role.salary FROM employee JOIN role ON employee.id = role.department_id JOIN department on role.department_id = department.id";
+    "SELECT employee.last_name, employee.first_name, role.title, department.department, role.salary FROM employee JOIN role ON employee_id = role.role_id JOIN department on role.role_id = department.id";
     connection.query(query, (err, res) => {
         console.table(res);
         start();
@@ -85,7 +85,7 @@ const employeeSearch = () => {
 
 const viewDept = () => {
     const query = 
-    "SELECT department.department FROM department"
+    "SELECT * FROM department"
     connection.query(query, (err, res) => {
         console.table(res);
         start();
@@ -94,9 +94,36 @@ const viewDept = () => {
 
 const viewRole = () => {
     const query = 
-    "SELECT role.title, department.department, role.department_id FROM role JOIN department ON role.department_id = department.id"
+    "SELECT role.title, department.department, role.role_id FROM role JOIN department ON role.role_id = department.id"
     connection.query(query, (err, res) => {
         console.table(res);
         start();
     });
+};
+
+const addEmployee = () => {
+    inquirer.prompt([
+        {
+            name: 'first',
+            type: 'input',
+            message: 'Enter employee first name',
+        },
+        {
+            name: 'last',
+            type: 'input',
+            message: 'Enter employee last name',
+        },
+        {
+            name: 'employee',
+            type: 'input',
+            message: 'Enter employee ID',
+        }
+    ]).then((data) => {
+        const query = `INSERT INTO employee (first_name, last_name, employee_id) VALUES ('${data.first}', '${data.last}', ${data.employee})`
+        connection.query(query, (err, res) => {
+            if (err) throw err;
+            console.table(query);
+            start();
+        });
+    })
 };
