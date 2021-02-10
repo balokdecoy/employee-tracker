@@ -117,7 +117,7 @@ const addEmployee = () => {
             name: 'employee',
             type: 'input',
             message: 'Enter employee ID',
-        }
+        },
     ]).then((data) => {
         const query = `INSERT INTO employee (first_name, last_name, employee_id) VALUES ('${data.first}', '${data.last}', ${data.employee})`
         connection.query(query, (err, res) => {
