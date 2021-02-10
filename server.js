@@ -127,3 +127,25 @@ const addEmployee = () => {
         });
     })
 };
+
+const addDept = () => {
+    inquirer.prompt([
+        {
+            name: 'department',
+            type: 'input',
+            message: 'Enter name of department',
+        },
+        {
+            name: 'number',
+            type: 'input',
+            message: 'Enter department number',
+        }
+    ]).then((data) => {
+        const query = `INSERT INTO department (department, id) VALUES ('${data.department}', ${data.number})`
+        connection.query(query, (err, res) => {
+            if (err) throw err;
+            console.table(query);
+            start();
+        });
+    })
+};
