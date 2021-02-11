@@ -76,7 +76,7 @@ const start = () => {
 
 const employeeSearch = () => {
     const query = 
-    "SELECT employee.last_name, employee.first_name, role.title, department.department, role.salary FROM employee JOIN role ON employee_id = role.role_id JOIN department on role.role_id = department.id";
+    "SELECT employee.last_name, employee.first_name, role.title, department.department, role.salary FROM employee LEFT JOIN role ON employee.role_id = role.id JOIN department on role.department_id = department.id";
     connection.query(query, (err, res) => {
         console.table(res);
         start();
@@ -94,7 +94,7 @@ const viewDept = () => {
 
 const viewRole = () => {
     const query = 
-    "SELECT role.title, department.department, role.role_id FROM role JOIN department ON role.role_id = department.id"
+    "SELECT role.title, role.salary, department.department FROM role LEFT JOIN department on role.department_id = department.id"
     connection.query(query, (err, res) => {
         console.table(res);
         start();
@@ -131,7 +131,6 @@ const addEmployee = () => {
         const query = `INSERT INTO employee (first_name, last_name, role_id) VALUES ('${data.first}', '${data.last}', ${data.role})`
         connection.query(query, (err, res) => {
             if (err) throw err;
-            console.table(query);
             start();
         });
     })
@@ -144,22 +143,24 @@ const addDept = () => {
             type: 'input',
             message: 'Enter name of department',
         },
-        {
-            name: 'number',
-            type: 'input',
-            message: 'Enter department number',
-        }
     ]).then((data) => {
-        const query = `INSERT INTO department (department, id) VALUES ('${data.department}', ${data.number})`
+        const query = `INSERT INTO department (department) VALUES ('${data.department}')`
         connection.query(query, (err, res) => {
             if (err) throw err;
-            console.table(query);
             start();
         });
     })
 };
 
 const addRole = () => {
+    const deptChoices = [];
+    const query = 'SELECT department.id, department.department FROM department';
+    connection.query(query, (err, res) => {
+        if (err) throw err;
+        for (var i = 0; i < res.length; i++) {
+            deptChoices.push({ name: res[i].department, value: res[i].id });
+        };
+    })
     inquirer.prompt([
         {
             name: 'title',
@@ -172,16 +173,21 @@ const addRole = () => {
             message: 'Enter role salary',
         },
         {
-            name: 'number',
-            type: 'input',
-            message: 'Enter role ID',
-        }
+            name: 'department',
+            type: 'rawlist',
+            message: 'Select a department for this role',
+            choices: deptChoices,
+        },
     ]).then((data) => {
-        const query = `INSERT INTO role (title, salary, role_id) VALUES ('${data.title}',${data.salary}, ${data.number})`
+        const query = `INSERT INTO role (title, salary, department_id) VALUES ('${data.title}',${data.salary}, ${data.department})`
         connection.query(query, (err, res) => {
             if (err) throw err;
-            console.table(query);
             start();
         });
     })
 };
+
+const updateRole = () => {
+    // Need new role name and id, set role_id = ? where id = employee no. 
+    //UPDATE employee SET role_id = ? WHERE employee.id = ?
+}
