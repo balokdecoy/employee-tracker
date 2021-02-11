@@ -37,7 +37,6 @@ const start = () => {
             'Add department',
             'Add role',
             'Update employee role',
-            'View budget',
             'Exit',
         ]
     }).then((data) => {
@@ -62,9 +61,6 @@ const start = () => {
                 break;
             case 'Update employee role':
                 updateRole();
-                break;
-            case 'View budget':
-                viewBudget();
                 break;
             case 'Exit':
                 connection.end();
@@ -190,4 +186,34 @@ const addRole = () => {
 const updateRole = () => {
     // Need new role name and id, set role_id = ? where id = employee no. 
     //UPDATE employee SET role_id = ? WHERE employee.id = ?
-}
+    const employeeChoices = [];
+    const roleChoices = [];
+    const query = 'SELECT * FROM employee LEFT JOIN role ON employee.role_id = role.id ';
+    connection.query(query, (err, res) => {
+        if (err) throw err;
+        for (var i = 0; i < res.length; i++) {
+            employeeChoices.push({ name: res[i].first_name + " " + res[i].last_name, value: res[i].role_id });
+            roleChoices.push({ name: res[i].title, value: res[i].id })
+        };
+        inquirer.prompt([
+            {
+                name: 'employee',
+                type: 'rawlist',
+                message: 'Which employee would you like to update?',
+                choices: employeeChoices,
+            },
+            {
+                name: 'role',
+                type: 'rawlist',
+                message: 'Which role would you like to assign this employee?',
+                choices: roleChoices,
+            },
+        ]).then((data) => {
+            const query = `UPDATE employee SET employee.id =? WHERE role_id = ?`
+            connection.query(query, (err, res) => {
+                if (err) throw err;
+                start();
+            });
+        })
+    })
+};
