@@ -183,37 +183,111 @@ const addRole = () => {
     })
 };
 
+// const updateRole = () => {
+//     // Need new role name and id, set role_id = ? where id = employee no. 
+//     //UPDATE employee SET role_id = ? WHERE employee.id = ?
+
+//     const roleOptions = [];
+//     const queryRole = () => {
+//         const query = 'SELECT role.id, role.title FROM role';
+//         connection.query(query, (err, res) => {
+//             if (err) throw err;
+//             for (var i = 0; i < res.length; i++) {
+//                 roleOptions.push({ name: res[i].title, value: res[i].id })
+//             };
+//         })
+
+//     }
+   
+        
+//         // const query = 'SELECT * FROM role';
+//         // connection.query(query, (err, res) => {
+            
+//         //     if (err) throw err;
+//         //     for (var i=0; i < res.length; i++) {
+//         //         roleChoices.push({ name: res[i].title, value: res[i].id })
+//         //     }
+//         // });
+
+//     const getEmployees = () => {
+//         const query = 'SELECT * FROM employee'
+//         connection.query(query, (err, res) => {
+//             if (err) throw err;
+//             for (var i=0; i<res.length; i++) {
+//                 employeeChoices.push({ name: res[i].first_name + " " + res[i].last_name, value: res[i].role_id })
+//             }
+//         })
+//     };
+//     queryRole()
+
+//     //const query = 'SELECT * FROM employee LEFT JOIN role ON employee.role_id = role.id ';
+//     // Create functions to run queries
+//     // 2 queries - 1 for employee and one for roles
+//     // Run the 2 queries in the head and add them to the array and those are fed to the inquirer prompts
+//     // connection.query(query, (err, res) => {
+//     //     if (err) throw err;
+//     //     for (var i = 0; i < res.length; i++) {
+//     //         employeeChoices.push({ name: res[i].first_name + " " + res[i].last_name, value: res[i].role_id });
+//     //         roleChoices.push({ name: res[i].title, value: res[i].id })
+//     //     };
+    
+//     inquirer.prompt([
+//         {
+//             name: 'employee',
+//             type: 'rawlist',
+//             message: 'Which employee would you like to update?',
+//             choices: roleOptions,
+//         },
+//         // {
+//         //     name: 'role',
+//         //     type: 'rawlist',
+//         //     message: 'Which role would you like to assign this employee?',
+//         //     choices: roleOptions,
+//         // },
+//     ]).then((data) => {
+//         const query = `UPDATE employee SET role_id = ? WHERE employee.id = ?`
+//         connection.query(query, (err, res) => {
+//             if (err) throw err;
+//             start();
+//         });
+//     })
+
+// };
+
 const updateRole = () => {
-    // Need new role name and id, set role_id = ? where id = employee no. 
-    //UPDATE employee SET role_id = ? WHERE employee.id = ?
-    const employeeChoices = [];
-    const roleChoices = [];
-    const query = 'SELECT * FROM employee LEFT JOIN role ON employee.role_id = role.id ';
+    const roles = [];
+    const query = 'SELECT role.title, role.id FROM role';
     connection.query(query, (err, res) => {
         if (err) throw err;
         for (var i = 0; i < res.length; i++) {
-            employeeChoices.push({ name: res[i].first_name + " " + res[i].last_name, value: res[i].role_id });
-            roleChoices.push({ name: res[i].title, value: res[i].id })
+            roles.push({ name: res[i].title, value: res[i].id });
+            
         };
         inquirer.prompt([
             {
-                name: 'employee',
+                name: 'title',
                 type: 'rawlist',
-                message: 'Which employee would you like to update?',
-                choices: employeeChoices,
+                message: 'Enter title of role',
+                choices: roles,
             },
             {
-                name: 'role',
+                name: 'salary',
+                type: 'input',
+                message: 'Enter role salary',
+            },
+            {
+                name: 'department',
                 type: 'rawlist',
-                message: 'Which role would you like to assign this employee?',
-                choices: roleChoices,
+                message: 'Select a department for this role',
+                choices: roles,
             },
         ]).then((data) => {
-            const query = `UPDATE employee SET employee.id =? WHERE role_id = ?`
+            const query = `INSERT INTO role (title, salary, department_id) VALUES ('${data.title}',${data.salary}, ${data.department})`
             connection.query(query, (err, res) => {
                 if (err) throw err;
                 start();
             });
         })
     })
+  
 };
