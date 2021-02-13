@@ -20,7 +20,24 @@ const connection = mysql.createConnection({
 
 connection.connect((err) => {
   if (err) throw err;
-  console.log(`Application running on PORT: ${port}`)
+  console.log(`Application running on PORT: ${port}`);
+  console.log(`╔═════════════════════════════════════════════════════╗
+║                                                     ║
+║     ___                 _                         ║
+║    | _| _ __  _ _ | | __  _   _  _  _   ║
+║    |  | | ' \` _ \\| '_ \\| |/ _ \\| | | |/ _ \\/ _ \\  ║
+║    | |_| | | | | | |) | | () | || |  _/  __/  ║
+║    |__|| || || ._/||\\__/ \\, |\\_|\\__|  ║
+║                    ||            |__/             ║
+║                                                     ║
+║     _  _                                          ║
+║    |  \\/  | _ _ _ _   _ _  _ _  _ _ __        ║
+║    | |\\/| |/ \` | ' \\ / \` |/ _\` |\/ _ \\ '_|       ║
+║    | |  | | (| | | | | (| | (| |  _/ |          ║
+║    ||  ||\\_,|| ||\\_,|\\_, |\\_||          ║
+║                              |_/                  ║
+║                                                     ║
+\╚═════════════════════════════════════════════════════╝`);
   start();
 });
 
@@ -255,39 +272,37 @@ const addRole = () => {
 // };
 
 const updateRole = () => {
-    const roles = [];
-    const query = 'SELECT role.title, role.id FROM role';
+    const query = 'SELECT * FROM role';
+    let employeeArray = [];
     connection.query(query, (err, res) => {
-        if (err) throw err;
-        for (var i = 0; i < res.length; i++) {
-            roles.push({ name: res[i].title, value: res[i].id });
-            
-        };
+        res.forEach((name) => {
+            employeeArray.push(name.title);
+            console.log(name.title);
+        })
+        console.log(employeeArray)
         inquirer.prompt([
             {
                 name: 'title',
                 type: 'rawlist',
-                message: 'Enter title of role',
-                choices: roles,
+                message: 'Select an employee to update',
+                choices: employeeArray,
+            },
+            {
+                name: 'role',
+                type: 'input',
+                message: 'Enter new role',
             },
             {
                 name: 'salary',
                 type: 'input',
-                message: 'Enter role salary',
-            },
-            {
-                name: 'department',
-                type: 'rawlist',
-                message: 'Select a department for this role',
-                choices: roles,
+                message: 'Enter employee salary',
             },
         ]).then((data) => {
-            const query = `INSERT INTO role (title, salary, department_id) VALUES ('${data.title}',${data.salary}, ${data.department})`
+            const query = `UPDATE role SET title = '${data.role}', salary = ${data.salary} WHERE title = '${data.title}'`;
             connection.query(query, (err, res) => {
                 if (err) throw err;
                 start();
             });
         })
     })
-  
 };
