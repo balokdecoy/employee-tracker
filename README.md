@@ -56,7 +56,7 @@
 
   If you have questions, you can reach me via email at johnniesimpson88@gmail.com.
 
-    ## Acknowledgments
+  ## Acknowledgments
 
   Special thanks to Amir Ashtiany who helped considerably with the update employee role functionality and helped turn my over-complicated ideas into something far more sensible. 
 
