@@ -245,9 +245,8 @@ const removeEmployee = () => {
     let employeeArray = [];
     connection.query(query, (err, res) => {
         res.forEach((name) => {
-            employeeArray.push(name.first_name + " " + name.last_name);
+            employeeArray.push(name.id + " " + name.first_name + " " + name.last_name);
         })
-        console.log(employeeArray)
         inquirer.prompt([
             {
                 name: 'name',
@@ -262,8 +261,12 @@ const removeEmployee = () => {
             }
         ]).then((data) => {
             if (data.confirm === true) {
-                console.log("This user wants to delete " + data.name)
-            } else {console.log("Don't delete " + data.name)}
+                // console.log("This user wants to delete " + data.name[0])
+                console.log('Deleting user with ID ' + data.name[0] + "...")
+                // connection.query(`DELETE FROM employee WHERE id = '${data.name[0]}'`)
+            } else {
+                console.log("Abort employee delete. Returning you to the main menu...")
+            }
             connection.query(query, (err, res) => {
                 if (err) throw err;
                 start();
