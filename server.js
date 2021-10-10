@@ -255,12 +255,22 @@ const removeEmployee = () => {
                 message: 'Select an employee to delete',
                 choices: employeeArray,
             },
-        ]).then((data) => {
-            console.log(data)
-            connection.query(query, (err, res) => {
-                if (err) throw err;
-                start();
-            });
+            {
+                name: 'confirm',
+                type: 'confirm',
+                message: 'Confirm employee deletion'
+            }
+        ]).then((data, answer) => {
+            console.log(data.name);
+            console.log("break!");
+            console.log(data.confirm)
+            // if (data[0] === 'Johnnie Simpson' && data[1] === 'true') {
+            //     console.log("This user wants to delete " + data[0])
+            // } else {console.log("Don't do it!")}
+            // connection.query(query, (err, res) => {
+            //     if (err) throw err;
+            //     start();
+            // });
         })
     })
 }
