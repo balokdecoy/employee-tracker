@@ -241,6 +241,26 @@ const updateRole = () => {
 };
 
 const removeEmployee = () => {
-    console.log("This feature is not yet implemented");
-    start();
+    const query = 'SELECT * FROM employee';
+    let employeeArray = [];
+    connection.query(query, (err, res) => {
+        res.forEach((name) => {
+            employeeArray.push(name.first_name + " " + name.last_name);
+        })
+        console.log(employeeArray)
+        inquirer.prompt([
+            {
+                name: 'name',
+                type: 'rawlist',
+                message: 'Select an employee to delete',
+                choices: employeeArray,
+            },
+        ]).then((data) => {
+            console.log(data)
+            connection.query(query, (err, res) => {
+                if (err) throw err;
+                start();
+            });
+        })
+    })
 }
