@@ -260,10 +260,7 @@ const removeEmployee = () => {
                 type: 'confirm',
                 message: 'Confirm employee deletion'
             }
-        ]).then((data, answer) => {
-            // console.log(data.name);
-            // console.log("break!");
-            // console.log(data.confirm)
+        ]).then((data) => {
             if (data.confirm === true) {
                 console.log("This user wants to delete " + data.name)
             } else {console.log("Don't delete " + data.name)}
