@@ -54,6 +54,7 @@ const start = () => {
             'Add department',
             'Add role',
             'Update employee role',
+            'Remove employee',
             'Exit',
         ]
     }).then((data) => {
@@ -78,6 +79,9 @@ const start = () => {
                 break;
             case 'Update employee role':
                 updateRole();
+                break;
+            case 'Remove employee':
+                removeEmployee();
                 break;
             case 'Exit':
                 connection.end();
@@ -235,3 +239,8 @@ const updateRole = () => {
         })
     })
 };
+
+const removeEmployee = () => {
+    console.log("This feature is not yet implemented");
+    start();
+}
