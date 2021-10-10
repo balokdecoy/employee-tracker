@@ -262,8 +262,8 @@ const removeEmployee = () => {
         ]).then((data) => {
             if (data.confirm === true) {
                 // console.log("This user wants to delete " + data.name[0])
-                console.log('Deleting user with ID ' + data.name[0] + "...")
-                // connection.query(`DELETE FROM employee WHERE id = '${data.name[0]}'`)
+                console.log('Deleting employee with ID ' + data.name[0] + "...")
+                connection.query(`DELETE FROM employee WHERE id = '${data.name[0]}'`)
             } else {
                 console.log("Abort employee delete. Returning you to the main menu...")
             }
